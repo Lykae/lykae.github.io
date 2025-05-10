@@ -78338,26 +78338,26 @@ HC(){var s,r,q,p,o=this,n=o.e
 if(n.gE(0)===0)return
 o.soC(!1)
 o.sr7(!1)
-s=o.ch
-if(s!=null)s.a-=2
-r=n.dK(0)
+s=n.dK(0)
 n=o.d.dK(0)
-o.srw(r.b)
-o.svB(r.c)
-s=$.X0()
+o.srw(s.b)
+o.svB(s.c)
+r=$.X0()
 q=o.gdB()
 q.a.F(q)
 q=o.ay
 p=o.gds()
 p.a.F(p)
-s.pb("Rollback. Chain: "+A.k(q)+", Score: "+A.k(o.at))
-s=r.a
-q=s.a
+r.pb("Rollback. Chain: "+A.k(q)+", Score: "+A.k(o.at))
+r=s.a
+q=r.a
 if(q>=0){o.b.i(0,q).jB()
 n=o.gml()
 n.a.F(n)
 o.sNI(o.ax+1)
-o.a1P(s)
+o.a1P(r)
+r=o.ch
+if(r!=null)r.a-=2
 return}n=A.mF(n.a,B.cw)
 n.jB()
 n.aB()
