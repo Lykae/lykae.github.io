@@ -179,10 +179,9 @@
 		}
 
 		.game-screen:fullscreen {
-			display: grid;
 			width: 100vw;
 			height: 100vh;
-			place-items: center;
+			height: 100dvh;
 			aspect-ratio: auto;
 		}
 
@@ -192,11 +191,6 @@
 			height: 100%;
 			border: 0;
 			outline: none;
-		}
-
-		.game-screen:fullscreen #canvas {
-			width: min(100vw, 177.7778vh);
-			height: min(100vh, 56.25vw);
 		}
 
 		#loading {
@@ -538,13 +532,13 @@
 		document.addEventListener("fullscreenchange", updateFullscreenButton);
 
 		try {
-			// The game lays out UI 1:1 with its render size, so keep the render buffer
-			// at least 1280x720 and let CSS scale it down to the frame.
+			// Match the displayed canvas in both axes. Fullscreen can be portrait;
+			// Godot handles the logical UI size separately from display density.
 			const syncCanvasSize = () => {
 				const dpr = window.devicePixelRatio || 1;
 				const rect = canvas.getBoundingClientRect();
-				const width = Math.max(1280, Math.round(rect.width * dpr));
-				const height = Math.round(width * 9 / 16);
+				const width = Math.max(1, Math.round(rect.width * dpr));
+				const height = Math.max(1, Math.round(rect.height * dpr));
 				if (canvas.width !== width || canvas.height !== height) {
 					canvas.width = width;
 					canvas.height = height;
@@ -553,7 +547,9 @@
 			};
 			syncCanvasSize();
 			new ResizeObserver(syncCanvasSize).observe(canvas);
-			const engine = new Engine(Object.assign({"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":58878440,"index.wasm":37902138},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4}, { canvasResizePolicy: 0 }));
+			window.addEventListener("resize", syncCanvasSize);
+			document.addEventListener("fullscreenchange", syncCanvasSize);
+			const engine = new Engine(Object.assign({"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":58878584,"index.wasm":37902138},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4}, { canvasResizePolicy: 0 }));
 			const missingFeatures = Engine.getMissingFeatures({ threads: false });
 			if (missingFeatures.length > 0) {
 				showFailure(new Error("This browser is missing features required to play:\n" + missingFeatures.join("\n")));
